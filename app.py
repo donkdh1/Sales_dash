@@ -12,7 +12,7 @@
 # In[2]:
 
 
-get_ipython().system('pip install dash')
+#get_ipython().system('pip install dash')
 
 
 # In[4]:
@@ -23,7 +23,7 @@ import numpy as np
 
 # Dash packages
 import dash
-from dash import dcc
+import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import plotly.graph_objects as go
@@ -37,7 +37,7 @@ from plotly.colors import DEFAULT_PLOTLY_COLORS   # chart default colors
 
 
 # After moving to the preceding folder, move to the data folder (fix wording and path)
-path = 'C:/Users/Kim/Desktop/Book/python-main/data/'
+path = 'data/'
 
 
 # In[6]:
