@@ -217,7 +217,7 @@ def update_output(val):
         
         trace = go.Indicator(mode = 'number+delta',
                              value = values,
-                             number = dict(font_size = 35),   # font size fixed (otherwise, the fonts will be different sizes by default)
+                             number = dict(font_size = 30),   # font size fixed (otherwise, the fonts will be different sizes by default)
                              delta = dict(reference = values - deltas,
                                           font_size = 20,
                                           relative = False,
