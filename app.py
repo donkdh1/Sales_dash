@@ -1,23 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
-#fix call libraries (cant find dash & dcc), call the data
-
 
 # ## Call Libraries 
-
-# In[2]:
-
-
-#get_ipython().system('pip install dash')
-
-
-# In[4]:
-
-
 import pandas as pd
 import numpy as np
 
@@ -31,55 +16,28 @@ import plotly.graph_objects as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS   # chart default colors
 
 
-# ## Call the Data 
-
-# In[5]:
-
-
-# After moving to the preceding folder, move to the data folder (fix wording and path)
+### Call the Data
 path = 'data/'
-
-
-# In[6]:
-
-
-# Call the data
 df = pd.read_csv(path + 'Sales data/Data.csv')
 
 
-# ## Create and Arrange Data Variables 
-
-# In[7]:
-
+### Create and Arrange Data Variables
 
 # Create Margin
 df['Margin'] = df['Revenue'] - df['Cost']
 
-
-# In[8]:
-
-
 # Create variables for the year and month
 df['year'] = df['OrderDate'].str.slice(start = 0, stop = 4)
 df['month'] = df['OrderDate'].str.slice(start = 5, stop = 7)
+
 # Arrange the data
 df = df.sort_values(by = ['Region','Channel','Category','Item Type','year','month','Gender'])
 
-
-# ## Year Filter
-
-# In[9]:
-
-
+### Year Filter
 years = list(df['year'].unique())
 years.sort()
 
-
-# ## App & Layout 
-
-# In[10]:
-
-
+### App & Layout
 # App structure
 app = dash.Dash(__name__)
 app.title = ("Dashboard | Sales Data")
@@ -135,14 +93,9 @@ app.layout = html.Div([
 ])
 
 
-# ## Pie Chart 
-
-# In[11]:
-
-
+### Pie Chart
 cols = DEFAULT_PLOTLY_COLORS
 
-########## Pie's 
 @app.callback([Output('channel',  'figure'), 
                Output('gender', 'figure'), 
                Output('agegroup',    'figure')], 
@@ -187,12 +140,9 @@ def update_output(val):
     return figures[0], figures[1], figures[2]
 
 
-# ## Indicator 
+### Indicator
 
-# In[14]:
-
-
-########## by Region
+# by Region
 @app.callback([Output('idc_africa',  'figure'), 
                Output('idc_america', 'figure'), 
                Output('idc_asia',    'figure'), 
@@ -235,11 +185,7 @@ def update_output(val):
     return figures[0], figures[1], figures[2], figures[3], figures[4]
 
 
-# ## Bar Chart 
-
-# In[15]:
-
-
+### Bar Chart
 @app.callback(Output('country', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
@@ -256,7 +202,7 @@ def update_output(val):
     
         
     # hover_text
-    df_con['text'] = df_con['Country'] + ': ' +                      round(df_con['Revenue']/1000000,1).astype(str) + 'M'
+    df_con['text'] = df_con['Country'] + ': ' + round(df_con['Revenue']/1000000,1).astype(str) + 'M'
     
     trace = go.Bar(x = df_con['Country'],
                    y = df_con['Revenue'],
@@ -278,12 +224,9 @@ def update_output(val):
     return figure
 
 
-# ## Line Chart 
+### Line Chart
 
-# In[16]:
-
-
-### by YearMonth
+# by YearMonth
 @app.callback(Output('line', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
@@ -322,12 +265,9 @@ def update_output(val):
     return figure
 
 
-# ## Radar Chart
+### Radar Chart
 
-# In[17]:
-
-
-### by Year & Category
+# by Year & Category
 @app.callback(Output('radar', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
@@ -357,7 +297,7 @@ def update_output(val):
         ranks.append(ranks[0])                   # Append to list
         thetas = list(dat['Category'])           # Item list
         thetas.append(thetas[0])                 # Append to list
-        rank_R = list(dat['Range'])              # Cateogeory information by ranking
+        rank_R = list(dat['Range'])              # Category information by ranking
         rank_R.append(rank_R[0])                 # Append to list
 
         traces.append(go.Scatterpolar(r = ranks,
@@ -380,12 +320,9 @@ def update_output(val):
     return figure
 
 
-# ## Map Graph 
+### Map Graph
 
-# In[18]:
-
-
-### Choropleth Map
+# Choropleth Map
 @app.callback(Output('map', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
@@ -434,12 +371,9 @@ def update_output(val):
     return figure
 
 
-# ## Sankey Graph 
+### Sankey Graph
 
-# In[19]:
-
-
-### Sankey
+# Sankey
 @app.callback(Output('sankey', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
@@ -488,11 +422,6 @@ def update_output(val):
 
     return figure
 
-
-# In[ ]:
-
-
 # Run App
 if __name__=='__main__':
     app.run_server(debug=False)
-
