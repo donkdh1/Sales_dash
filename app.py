@@ -18,7 +18,7 @@ from plotly.colors import DEFAULT_PLOTLY_COLORS   # chart default colors
 
 ### Call the Data
 path = 'data/'
-df = pd.read_csv(path + 'Sales data/Data.csv')
+df = pd.read_csv(path + 'Revenue data/Data.csv')
 
 
 ### Create and Arrange Data Variables
@@ -40,14 +40,14 @@ years.sort()
 ### App & Layout
 # App structure
 app = dash.Dash(__name__)
-app.title = ("Dashboard | Sales Data")
+app.title = ("Dashboard | Revenue Data")
 server = app.server
 
 # App layout
 app.layout = html.Div([
     
     # Main Title
-    html.H2('Sales Dashboard with Dash', style={'textAlign': 'center', 'marginBottom':10, 'marginTop':10}),
+    html.H2('Revenue Dashboard with Dash', style={'textAlign': 'center', 'marginBottom':10, 'marginTop':10}),
     
     # Dividing the sections - Left
     html.Div([
@@ -190,7 +190,7 @@ def update_output(val):
 
 def update_output(val):
     
-    # Sales by Country
+    # Revenue by Country
     df_con = df[df['year'] == val]
     df_con = df_con.loc[:,['Country','Revenue']].groupby(by = ['Country'], as_index = False).sum()
     df_con = df_con.sort_values(by = ['Revenue'], ascending=False)
@@ -293,7 +293,7 @@ def update_output(val):
     traces = []
     for yr in years:
         dat = df_radar[df_radar['year'] == yr]   # Extract specific year
-        ranks = list(dat['Rank'])                # List of sales ranking
+        ranks = list(dat['Rank'])                # List of revenue ranking
         ranks.append(ranks[0])                   # Append to list
         thetas = list(dat['Category'])           # Item list
         thetas.append(thetas[0])                 # Append to list
@@ -360,7 +360,7 @@ def update_output(val):
                                 )
     
     data = [trace]
-    layout = go.Layout(title = 'Sales Map',
+    layout = go.Layout(title = 'Revenue Map',
                        geo = dict(showframe=False,
                                   showcoastlines=False,
                                   projection_type = 'equirectangular'),
@@ -378,7 +378,7 @@ def update_output(val):
 
 def update_output(val):
     
-    # Arrange in ascending order of sales for the continent, channel, item in 2020
+    # Arrange in ascending order of revenue for the continent, channel, item in 2020
     df_san = df[df['year'] == val].iloc[:,[13,4,11,9]]
     df_san = df_san.sort_values(by = ['Region','Channel','Category'])
     
@@ -414,7 +414,7 @@ def update_output(val):
                               color = '#EAEAEA'))
     
     data = [trace]
-    layout = go.Layout(title = dict(text='Sales Flow', font_size=16),
+    layout = go.Layout(title = dict(text='Revenue Flow', font_size=16),
                        font_size = 15,
                        height=420, margin=dict(l=50, r=50, b=20, t=50))
     
