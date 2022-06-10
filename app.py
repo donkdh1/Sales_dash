@@ -267,43 +267,43 @@ def update_output(val):
 
 ### Radar Chart
 
-# by Year & Category
+#by year & category
 @app.callback(Output('radar', 'figure'), [Input('id_year', 'value')])
 
 def update_output(val):
     
     df_rad = df.loc[:,['Category','Revenue','year']].groupby(by = ['year','Category'], as_index=False).sum()
     
-    # Rank by 5 step Range
-    df_rad['Rank'] = 0
-    df_rad.loc[df_rad['Revenue']<10000000, 'Rank'] = 1
-    df_rad.loc[(df_rad['Revenue']>=10000000) & (df_rad['Revenue']<30000000), 'Rank'] = 2
-    df_rad.loc[(df_rad['Revenue']>=30000000) & (df_rad['Revenue']<50000000), 'Rank'] = 3
-    df_rad.loc[(df_rad['Revenue']>=50000000) & (df_rad['Revenue']<70000000), 'Rank'] = 4
-    df_rad.loc[(df_rad['Revenue']>=70000000), 'Rank'] = 5
+    # Revenue range categories
+    df_rad['Range'] = 0
+    df_rad.loc[df_rad['Revenue']<10000000, 'Range'] = 1
+    df_rad.loc[(df_rad['Revenue']>=10000000) & (df_rad['Revenue']<30000000), 'Range'] = 2
+    df_rad.loc[(df_rad['Revenue']>=30000000) & (df_rad['Revenue']<50000000), 'Range'] = 3
+    df_rad.loc[(df_rad['Revenue']>=50000000) & (df_rad['Revenue']<70000000), 'Range'] = 4
+    df_rad.loc[(df_rad['Revenue']>=70000000), 'Range'] = 5
     
-    # range label - Create categories by rank
+    # Range labels
     rad_rg=pd.DataFrame([[0, '0'], [1, '< 10M'], [2, '10-30M'], [3, '30-50M'], [4, '50-70M'], [5, '70M <']])
-    rad_rg.columns = ['Rank', 'Range']
+    rad_rg.columns = ['Range', 'Ranges']
     
     # Join
-    df_radar = df_rad.merge(rad_rg, on = 'Rank', how = 'left')
+    df_radar = df_rad.merge(rad_rg, on = 'Range', how = 'left')
     
     # Graph
     traces = []
     for yr in years:
         dat = df_radar[df_radar['year'] == yr]   # Extract specific year
-        ranks = list(dat['Rank'])                # List of revenue ranking
-        ranks.append(ranks[0])                   # Append to list
+        ranges = list(dat['Range'])                # Revenue range Categories
+        ranges.append(ranges[0])                   # Append to list
         thetas = list(dat['Category'])           # Item list
         thetas.append(thetas[0])                 # Append to list
-        rank_R = list(dat['Range'])              # Category information by ranking
-        rank_R.append(rank_R[0])                 # Append to list
+        range_R = list(dat['Ranges'])              # Cateogeory info by ranges
+        range_R.append(range_R[0])                 # Append to list
 
-        traces.append(go.Scatterpolar(r = ranks,
+        traces.append(go.Scatterpolar(r = ranges,
                                       theta = thetas,
                                       name = yr, 
-                                      text = rank_R,
+                                      text = range_R,
                                       hovertemplate = "Revenue:%{text}"))
     
     data = traces
