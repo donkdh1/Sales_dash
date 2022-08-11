@@ -152,7 +152,7 @@ def update_output(val):
 
 def update_output(val):
         
-    # reg - unique value's
+    # reg - unique values
     reg = df['Region'].unique()
     
     # data by Region
@@ -160,19 +160,22 @@ def update_output(val):
     
     for i in range(len(reg)):
         df_fig = df[(df['year'] == val) & (df['Region'] == reg[i])]
-        df_fig = round(df_fig.loc[:,['Revenue','Margin']].sum(),1)
+        df_fig = round(df_fig.loc[:,['Revenue','Margin']].sum()/1000000,1) # Milion units
         
         values = df_fig['Revenue']
         deltas = df_fig['Margin']
         
         trace = go.Indicator(mode = 'number+delta',
                              value = values,
-                             number = dict(font_size = 27),   # font size fixed (otherwise, the fonts will be different sizes by default)
+                             number = dict(font_size = 35,    # font size fixed (otherwise, the fonts will be different sizes by default)
+                                          valueformat = ".1f",
+                                          suffix='M'),
                              delta = dict(reference = values - deltas,
                                           font_size = 20,
+                                          valueformat = ".1f",
                                           relative = False,
-                                          increasing_color = '#3078b4', increasing_symbol = '',
-                                          decreasing_color = '#d13b40', decreasing_symbol = '',
+                                          increasing_color = '#3078b4', #increasing_symbol = '',
+                                          decreasing_color = '#d13b40', #decreasing_symbol = '',
                                           position = 'top'),
                              title = dict(text = reg[i], font_size = 20)
                             )
