@@ -1,7 +1,7 @@
-pandas==1.4.2
-numpy==1.21.0
-plotly==5.6.0
-dash==2.4.1
+pandas==2.0.3
+numpy==1.25.2
+plotly==5.15.0
+dash==2.11.1
 dash-html-components==2.0.0
 dash-core-components==2.0.0
-gunicorn==20.1.0
+gunicorn==21.2.0
